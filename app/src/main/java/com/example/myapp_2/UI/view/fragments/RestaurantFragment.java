@@ -59,6 +59,7 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
     private Button mShareButton;
     private Button cartButton;
     private Button backButton;
+    private TextView nameText;
     private BroadcastReceiver broadcastReceiver;
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
@@ -67,10 +68,9 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
     private RatingBar ratingBar;
     private TextView ratingAverageTextView;
 
-
     private ViewPager viewPager;
-    private int[] imageUrls = {R.drawable.first_1, R.drawable.first_2, R.drawable.first_3, R.drawable.first_4, R.drawable.first_5};
-    private List<Product> products = getProducts();
+    private int[] sliderImages = {R.drawable.first_1, R.drawable.first_2, R.drawable.first_3, R.drawable.first_4, R.drawable.first_5};
+
     private static final String MY_PREFS_NAME = "MyPrefs";
     private float rating1 = 0.0f;
     private float rating2 = 0.0f;
@@ -83,7 +83,8 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
     private float rating9 = 0.0f;
     private float rating10 = 0.0f;
 
-
+    private String name;
+    private List<Product> products;
 
     EditText mEditText;
 
@@ -94,15 +95,11 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
     public RestaurantFragment(long noteId) {
         this.noteId = noteId;
     }
-    public RestaurantFragment() {
-
+    public RestaurantFragment(String name,List<Product> productList, int[] sliderImages) {
+        this.name = name;
+        this.products = productList;
+        this.sliderImages = sliderImages;
     }
-
-
-   // private ViewPager viewPager;
-
-
-   // EditText mEditText;
 
     public void createFile(String fileName, String fileContent) {//Реализовать создание текстового файла в app-specific storage.
         try {

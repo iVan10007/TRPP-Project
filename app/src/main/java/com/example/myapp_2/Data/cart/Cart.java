@@ -1,16 +1,18 @@
 package com.example.myapp_2.Data.cart;
 
 import com.example.myapp_2.Data.List_1.Product;
+import com.example.myapp_2.DataSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cart {
+public class Cart extends DataSource {
     private static Cart instance;
 
     private List<CartItem> items;
 
     private Cart() {
+        super("Cart");
         items = new ArrayList<>();
     }
 
