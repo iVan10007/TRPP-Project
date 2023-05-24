@@ -5,21 +5,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapp_2.R;
+import com.example.myapp_2.UI.view.fragments.RestaurantFragment;
 
 public class CartFragment extends Fragment {
 
     private TextView totalPriceTextView;
     private Button placeOrderButton;
+    private ImageButton backButton;
     private RecyclerView recyclerView;
 
     private CartAdapter adapter;
@@ -34,6 +38,7 @@ public class CartFragment extends Fragment {
         totalPriceTextView = view.findViewById(R.id.total_price_text_view);
         placeOrderButton = view.findViewById(R.id.place_order_button);
         recyclerView = view.findViewById(R.id.cart_recycler_view);
+        backButton = view.findViewById(R.id.backButton);
 
         cart = Cart.getInstance();
 
@@ -62,6 +67,14 @@ public class CartFragment extends Fragment {
             public void onClick(View v) {
 
                 Toast.makeText(getActivity(),"Опять работа???",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.main_activity_fragment_container, new RestaurantFragment()).addToBackStack(null).commit();
             }
         });
 

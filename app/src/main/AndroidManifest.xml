@@ -40,7 +40,8 @@
             android:exported="false" />
         <activity
             android:name="com.example.myapp_2.UI.view.activities.MainActivity"
-            android:exported="false">
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="com.example.myapplication_2.SEND_MESSAGE" />
                 <action android:name="com.example.action.OPEN_FIRST_FRAGMENT" />

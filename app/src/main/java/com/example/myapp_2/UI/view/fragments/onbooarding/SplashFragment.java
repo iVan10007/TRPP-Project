@@ -24,7 +24,7 @@ public class SplashFragment extends Fragment {
             public void run() {
                 getFragmentManager().beginTransaction().replace(R.id.onBoarding, new ViewPagerFragment()).addToBackStack(null).commit();
             }
-        }, 3000);
+        }, 1000);
 
         return inflater.inflate(R.layout.fragment_splash, container, false);
     }

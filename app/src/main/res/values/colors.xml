@@ -10,7 +10,7 @@
 
 
 
-    <color name="colorPrimary">#1976D2</color>
-<color name="colorPrimaryDark">#1565C0</color>
-<color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#5101C3</color>
+    <color name="colorAccent">#1976D2</color>
 </resources>

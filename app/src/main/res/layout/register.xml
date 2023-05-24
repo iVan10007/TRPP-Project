@@ -1,12 +1,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="-100dp"
         android:scaleType="centerCrop"
         android:src="@drawable/registration_background"
@@ -16,19 +15,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:orientation="vertical"
-
         android:paddingStart="24dp"
         android:paddingTop="35dp"
         android:paddingEnd="24dp"
-        android:paddingBottom="16dp">
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/buttonExit2"
+            android:id="@+id/buttonExit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button10"
@@ -36,24 +37,32 @@
 
         <TextView
 
-            android:id="@+id/textView"
-
             android:layout_width="match_parent"
+
             android:layout_height="30dp"
             android:layout_marginTop="50dp"
             android:gravity="center"
-            android:text="Вход"
+            android:text="Регистрация"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <View
-            android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:background="#c7c7c7" />
+
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_bg"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:padding="16dp" />
 
         <EditText
             android:id="@+id/editTextEmail"
@@ -76,11 +85,16 @@
             android:padding="16dp" />
 
         <Button
-            android:id="@+id/buttonLogin"
+            android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/button_rounded"
-            android:text="Войти" />
-        </LinearLayout>
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/button10"
+            android:text="Зарегистрироваться"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

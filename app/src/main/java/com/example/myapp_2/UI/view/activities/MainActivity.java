@@ -24,20 +24,18 @@ import com.example.myapp_2.Data.register.RegistrationFragment;
 import com.example.myapp_2.Data.register.User;
 import com.example.myapp_2.Data.register.UserDAO;
 import com.example.myapp_2.R;
-import com.example.myapp_2.UI.view.fragments.FirstFragment;
 import com.example.myapp_2.ViewModel.ViewModels.NoteViewModel;
 import com.example.myapp_2.databinding.ActivityMainBinding;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity{
 
     private NoteViewModel noteViewModel;
 
     private BroadcastReceiver broadcastReceiver;
 
     static boolean isRegister = false;
-    Button button1;
-    Button button3;
+    Button button1, button3;
     ActivityMainBinding binding;
     private Button btn_fragment1,btn_fragment2,btn_fragment3;
 
@@ -48,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new FirstFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
                     if (item.getItemId() == R.id.restaurants) {
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     return true;
                 });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.nav_container, new FirstFragment()).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new RestaurantsFragment()).addToBackStack(null).commit();
 
         if (isRegister) {
             binding.bottomNavigationView.setVisibility(View.GONE);
@@ -76,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (getIntent().getExtras().containsKey("user_id")) {
                 int userId = getIntent().getExtras().getInt("user_id");
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_container, new ProfileFragment());
+                transaction.replace(R.id.main_activity_fragment_container, new ProfileFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -102,10 +99,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view) {//2 способ
-
-    }
-    @Override
     protected void onDestroy() {
         super.onDestroy();
 // Удаление приемника
@@ -115,25 +108,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.nav_container,fragment);
-        String A = "HELLO";
-
-
-        Bundle bundle = new Bundle();
-        bundle.putInt("hello world", 4344);
-        fragment.setArguments(bundle);
-
+        fragmentTransaction.replace(R.id.main_activity_fragment_container,fragment);
 
         fragmentTransaction.commit();
-
     }
 
-// вызов фрагмента регистрации с передачей кода запроса
+// вызов фрагмента регистрации с передачей кода запроса-
 
     public void startRegistration() {
         isRegister = true;
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.nav_container, new RegistrationFragment()).addToBackStack(null).commit();
+        fragmentManager.beginTransaction().replace(R.id.main_activity_container, new RegistrationFragment()).addToBackStack(null).commit();
     }
 
     // обработка полученного результата (кода запроса)
@@ -163,5 +148,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+    public interface FragmentHost {
+        void switchFragment(Fragment fragment);
+    }
 
+    public void switchFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_activity_fragment_container, fragment)
+                .commit();
+    }
 }

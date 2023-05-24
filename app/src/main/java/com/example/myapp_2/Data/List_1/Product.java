@@ -6,6 +6,7 @@ public class Product {
     private int imageResource;
     private float rating;
     private double price;
+    private double new_price;
 
     public Product(String name, String description, int imageResource, float rating, double price) {
         this.name = name;
@@ -21,6 +22,15 @@ public class Product {
         this.imageResource = imageResource;
         this.rating = 0.0f;
         this.price = price;
+    }
+
+    public Product(String name, String description, int imageResource, float rating, double price,double new_price) {
+        this.name = name;
+        this.description = description;
+        this.imageResource = imageResource;
+        this.rating = rating;
+        this.price = price;
+        this.new_price = new_price;
     }
 
     public String getName() {
@@ -49,5 +59,13 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double getNewPrice() {
+        return new_price;
+    }
+
+    public void setNewPrice(double new_price) {
+        this.new_price = new_price;
     }
 }

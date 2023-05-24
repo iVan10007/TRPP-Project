@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,8 +14,9 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myapp_2.Data.Discount_Get_table.RestaurantsFragment;
 import com.example.myapp_2.R;
-import com.example.myapp_2.UI.view.fragments.FirstFragment;
+import com.example.myapp_2.UI.view.fragments.RestaurantFragment;
 
 public class LoginFragment extends Fragment {
     public static int profile_num;
@@ -39,7 +42,9 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.login, container, false);
-
+        Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fragment_transition_animation);
+        anim.setDuration(170);
+        view.startAnimation(anim);
         getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
@@ -64,7 +69,7 @@ public class LoginFragment extends Fragment {
                     editor.apply();
 
                     FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.nav_container, new FirstFragment());
+                    transaction.replace(R.id.main_activity_container, new RestaurantFragment());
                     transaction.addToBackStack(null);
                     transaction.commit();
                 } else {
@@ -72,16 +77,19 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
-        Button buttonReturn = view.findViewById(R.id.buttonReturn);
+        Button buttonReturn = view.findViewById(R.id.buttonExit2);
 
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_container, new RegistrationFragment());
+                transaction.replace(R.id.main_activity_fragment_container, new RestaurantsFragment());
+                //  transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
                 transaction.addToBackStack(null);
                 transaction.commit();
+                getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.VISIBLE);
+                Fragment fragment = requireActivity().getSupportFragmentManager().findFragmentById(R.id.main_activity_container);
+                requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
             }
         });
 

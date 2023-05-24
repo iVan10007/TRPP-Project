@@ -21,6 +21,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.myapp_2.Data.Discount_Get_table.RestaurantsFragment;
 import com.example.myapp_2.Data.cart.Cart;
 import com.example.myapp_2.Data.cart.CartFragment;
 
@@ -36,8 +39,6 @@ import com.example.myapp_2.Data.List_1.ProductAdapter;
 import com.example.myapp_2.Data.cart.OnProductClickListener;
 import com.example.myapp_2.PR_9_10.MyTask2;
 import com.example.myapp_2.R;
-import com.example.myapp_2.Data.register.RegistrationFragment;
-import com.example.myapp_2.UI.view.activities.MainActivity;
 import com.example.myapp_2.UI.view.adapters.SliderAdapter;
 import com.example.myapp_2.UI.view.activities.ReserveTableActivity;
 
@@ -52,11 +53,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class FirstFragment extends Fragment implements View.OnClickListener ,RatingBar.OnRatingBarChangeListener {
+public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBarChangeListener {
     private Button buttonRegister;
     private Button buttonRegistre_table;
     private Button mShareButton;
     private Button cartButton;
+    private Button backButton;
     private BroadcastReceiver broadcastReceiver;
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
@@ -89,10 +91,10 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
 
     private long noteId;
 
-    public FirstFragment(long noteId) {
+    public RestaurantFragment(long noteId) {
         this.noteId = noteId;
     }
-    public FirstFragment() {
+    public RestaurantFragment() {
 
     }
 
@@ -131,11 +133,9 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
         }
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_first, container, false);
+        View v = inflater.inflate(R.layout.fragment_restaurant, container, false);
         getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.VISIBLE);
         buttonRegistre_table = v.findViewById(R.id.reserveTable);
 
@@ -147,43 +147,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
                 startActivityForResult(intent, 2);
             }
         });
-
-
-        buttonRegister = v.findViewById(R.id.buttonRegister);
-
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).startRegistration(); // вызов метода startRegistration()
-                Fragment fragment = new RegistrationFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_container, fragment);
-                transaction.addToBackStack(null);
-
-                transaction.commit();
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-        mShareButton = v.findViewById(R.id.btn_3);
-
-        mShareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shareText();
-            }
-        });
-
 
         recyclerView = v.findViewById(R.id.recycler_view_products);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -219,8 +182,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
         rating9 = prefs.getFloat("rating9", 0.0f);
         rating10 = prefs.getFloat("rating10", 0.0f);
 
-
-
 // Устанавливаем оценки в соответствующие товары
         products.get(0).setRating(rating1);
         products.get(1).setRating(rating2);
@@ -244,10 +205,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
         products.get(8).setPrice(190);
         products.get(9).setPrice(299.99);
 
-
-
-
-
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
@@ -268,30 +225,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
                 addToCart(product);
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
 
         return v;
     }
@@ -336,26 +269,34 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {//После того как отрисовались лементы
         super.onViewCreated(view,savedInstanceState);
-        initView(view);
-        Button button = view.findViewById(R.id.cart_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fragment_transition_animation);
+        anim.setDuration(200);
+        view.startAnimation(anim);
+
+
+        cartButton = view.findViewById(R.id.cart_button);
+        cartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = requireFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_container, new CartFragment());
+                fragmentTransaction.replace(R.id.main_activity_fragment_container, new CartFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
 
-
-
-
-
-
-
-
+        backButton = view.findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = requireFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.main_activity_fragment_container, new RestaurantsFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);// количество потоков в пуле --> 3:
         // Создание задач с разными параметрами
@@ -370,28 +311,11 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
         // Каждая задача выполняется в своем потоке, и в консоль выводится имя каждого потока.
 
     }
-    private void initView(View view){
-        Button btnClick = (Button) view.findViewById(R.id.btn_2);
-        Button btnClick2 = (Button) view.findViewById(R.id.btn_3);
-        btnClick.setOnClickListener(this);
-        btnClick2.setOnClickListener(this);
-
-        Button btnClick3 = (Button) view.findViewById(R.id.cart_button);
-        btnClick3.setOnClickListener(this);
-
-        Button btnClick4 = (Button) view.findViewById(R.id.change_btn);
-        btnClick4.setOnClickListener(this);
-    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            int myInt = bundle.getInt("hello world", 123);
-            String strI = Integer.toString(myInt);
-            Toast.makeText(getActivity(),strI,Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -438,34 +362,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
 
 
     }
-
-    private void  changeFragment(){
-        getFragmentManager().beginTransaction().replace(R.id.nav_container,new SecondFragment()).addToBackStack(null).commit();
-    }
-    private void  changeFragment2(){
-        getFragmentManager().beginTransaction().replace(R.id.nav_container,new ThirdFragment()).addToBackStack(null).commit();
-    }
-    private void  changeFragment3(){
-        getFragmentManager().beginTransaction().replace(R.id.nav_container,new ListFragment()).addToBackStack(null).commit();
-    }
-    private void  changeFragment4(){
-        getFragmentManager().beginTransaction().replace(R.id.nav_container,new RecycleFragment()).addToBackStack(null).commit();
-    }
-    Context context;
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_2){
-            changeFragment4();
-            sendBroadcast();
-        }
-        if (view.getId() == R.id.cart_button){
-            openCartFragment();
-        }
-        if (view.getId() == R.id.change_btn){
-            changeFragment4();
-        }
-    }
-
 
     @Override
     public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
@@ -514,7 +410,6 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
             products.get(7).setRating(rating8);
             products.get(8).setRating(rating9);
             products.get(9).setRating(rating10);
-
         }
     }
 
@@ -534,7 +429,7 @@ public class FirstFragment extends Fragment implements View.OnClickListener ,Rat
     private void openCartFragment() {
         CartFragment cartFragment = new CartFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container_2, cartFragment);
+        transaction.replace(R.id.main_activity_fragment_container, cartFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

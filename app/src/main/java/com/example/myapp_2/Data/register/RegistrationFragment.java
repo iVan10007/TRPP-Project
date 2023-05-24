@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,21 +15,18 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myapp_2.Data.Discount_Get_table.RestaurantsFragment;
 import com.example.myapp_2.R;
-import com.example.myapp_2.UI.view.fragments.FirstFragment;
+import com.example.myapp_2.UI.view.activities.MainActivity;
 
 import java.util.List;
 
 public class RegistrationFragment extends Fragment {
 
     private EditText editTextName, editTextEmail, editTextPassword;
-    private Button buttonRegister_1;
+    private Button buttonRegister;
 
     private UserDAO userDAO;
-
-    public RegistrationFragment() {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,21 +34,26 @@ public class RegistrationFragment extends Fragment {
 
         userDAO = new UserDAO(getActivity());
         userDAO.open();
+        // сохраняем фрагмент в памяти во время анимации перехода
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.refister, container, false);
+        View view = inflater.inflate(R.layout.register, container, false);
+        Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fragment_transition_animation);
+        anim.setDuration(200);
+        view.startAnimation(anim);
 
         getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.GONE);
         editTextName = view.findViewById(R.id.editTextName);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
-        buttonRegister_1 = view.findViewById(R.id.buttonRegister_1);
+        buttonRegister = view.findViewById(R.id.buttonRegister);
 
-        buttonRegister_1.setOnClickListener(new View.OnClickListener() {
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = editTextName.getText().toString();
@@ -69,10 +73,6 @@ public class RegistrationFragment extends Fragment {
                     editor.putInt("profile_num", LoginFragment.profile_num );
                     editor.apply();
 
-                    FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.nav_container, new FirstFragment());
-                    transaction.addToBackStack(null);
-                    transaction.commit();
                 } else if (rowID == -1) {
                     Toast.makeText(getActivity(), "Invalid email", Toast.LENGTH_SHORT).show();
 // print all users to the log
@@ -87,28 +87,19 @@ public class RegistrationFragment extends Fragment {
                 }
             }
         });
-        Button buttonLogin_1 = view.findViewById(R.id.buttonLogin_1);
 
-        buttonLogin_1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_container, new LoginFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
         Button buttonExit = view.findViewById(R.id.buttonExit);
-
         buttonExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                getFragmentManager().popBackStack();
                 FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_container, new FirstFragment());
+                transaction.replace(R.id.main_activity_fragment_container, new RestaurantsFragment());
+              //  transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
                 transaction.addToBackStack(null);
                 transaction.commit();
+                getActivity().findViewById(R.id.bottomNavigationView).setVisibility(View.VISIBLE);
+                Fragment fragment = requireActivity().getSupportFragmentManager().findFragmentById(R.id.main_activity_container);
+                requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
             }
         });
 

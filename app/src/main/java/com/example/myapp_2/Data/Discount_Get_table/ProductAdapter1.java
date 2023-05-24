@@ -43,7 +43,7 @@ public class ProductAdapter1 extends RecyclerView.Adapter<ProductAdapter1.Produc
         holder.productName.setText(product.getName());
         holder.productDescription.setText(product.getDescription());
         holder.oldPriceTextView.setText(context.getString(R.string.old_price, String.format("%.2f", product.getPrice())));
-        holder.newPriceTextView.setText(context.getString(R.string.price, String.format("%.2f", product.getPrice())));
+        holder.newPriceTextView.setText(context.getString(R.string.price, String.format("%.2f", product.getNewPrice())));
         holder.oldPriceTextView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
     }
 

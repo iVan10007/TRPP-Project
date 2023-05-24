@@ -3,7 +3,6 @@ package com.example.myapp_2.Data.Discount_Get_table;
 import static android.app.Activity.RESULT_OK;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,22 +15,21 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.myapp_2.Data.register.LoginFragment;
 import com.example.myapp_2.Data.register.User;
 import com.example.myapp_2.Data.register.UserDAO;
 import com.example.myapp_2.R;
-import com.example.myapp_2.UI.view.fragments.FirstFragment;
+import com.example.myapp_2.UI.view.fragments.RestaurantFragment;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -74,14 +72,16 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.profile, container, false);
-
+        Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fragment_transition_animation);
+        anim.setDuration(200);
+        view.startAnimation(anim);
         ImageButton btnFirstFragment = view.findViewById(R.id.btn_first_fragment);
         btnFirstFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
                 FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_container, new FirstFragment());
+                transaction.replace(R.id.main_activity_container, new RestaurantFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
