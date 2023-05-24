@@ -11,7 +11,7 @@ public class Cart extends DataSource {
 
     private List<CartItem> items;
 
-    private Cart() {
+    public Cart() {
         super("Cart");
         items = new ArrayList<>();
     }

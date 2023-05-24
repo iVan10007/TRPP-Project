@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import com.example.myapp_2.Data.register.LoginFragment;
 import com.example.myapp_2.R;
 
+import com.example.myapp_2.RestaurantsPresenter;
 import com.example.myapp_2.UI.view.activities.MainActivity;
 import com.example.myapp_2.UI.view.fragments.RestaurantFragment;
 import com.example.myapp_2.databinding.FragmentRestaurantsBinding;
@@ -26,7 +27,9 @@ public class RestaurantsFragment extends Fragment implements RecyclerViewInterfa
     ArrayList<RestaurantModel> restaurantModels = new ArrayList<>();
     int[] restaurantsImages = {R.drawable.first_1, R.drawable.first_2, R.drawable.first_3, R.drawable.first_4};
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    RestaurantsPresenter restaurantsPresenter = new RestaurantsPresenter(this);
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         FragmentRestaurantsBinding binding = FragmentRestaurantsBinding.inflate(inflater, container, false);
         View view = inflater.inflate(R.layout.fragment_restaurants, container, false);
@@ -35,8 +38,7 @@ public class RestaurantsFragment extends Fragment implements RecyclerViewInterfa
         view.startAnimation(anim);
         setUpRestaurants();
 
-        RestaurantsRecyclerViewAdapter adapter = new RestaurantsRecyclerViewAdapter(getActivity(), restaurantModels, this);
-        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setAdapter(restaurantsPresenter.getRestaurantsRecyclerViewAdapterAdapter());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override

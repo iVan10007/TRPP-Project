@@ -5,16 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -29,19 +19,25 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.myapp_2.Data.Discount_Get_table.RestaurantsFragment;
-import com.example.myapp_2.Data.cart.Cart;
-import com.example.myapp_2.Data.cart.CartFragment;
-
 import com.example.myapp_2.Data.List_1.Product;
 import com.example.myapp_2.Data.List_1.ProductAdapter;
+import com.example.myapp_2.Data.cart.Cart;
+import com.example.myapp_2.Data.cart.CartFragment;
 import com.example.myapp_2.Data.cart.OnProductClickListener;
 import com.example.myapp_2.PR_9_10.MyTask2;
 import com.example.myapp_2.R;
-import com.example.myapp_2.UI.view.adapters.SliderAdapter;
+import com.example.myapp_2.RestaurantPresenter;
 import com.example.myapp_2.UI.view.activities.ReserveTableActivity;
-
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,6 +50,9 @@ import java.util.concurrent.Executors;
 
 
 public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBarChangeListener {
+
+    RestaurantPresenter restaurantPresenter = new RestaurantPresenter(this);
+
     private Button buttonRegister;
     private Button buttonRegistre_table;
     private Button mShareButton;
@@ -92,14 +91,9 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
 
     private long noteId;
 
-    public RestaurantFragment(long noteId) {
-        this.noteId = noteId;
-    }
-    public RestaurantFragment(String name,List<Product> productList, int[] sliderImages) {
-        this.name = name;
-        this.products = productList;
-        this.sliderImages = sliderImages;
-    }
+//    public RestaurantFragment(long noteId) {
+//        this.noteId = noteId;
+//    }
 
     public void createFile(String fileName, String fileContent) {//Реализовать создание текстового файла в app-specific storage.
         try {
@@ -161,10 +155,9 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
         });
 
 
-
         viewPager = v.findViewById(R.id.view_pager);
-        SliderAdapter adapter = new SliderAdapter(getActivity(), imageUrls);
-        viewPager.setAdapter(adapter);
+
+        viewPager.setAdapter(restaurantsPresenter.getSliderAdapter());
 
 // Получаем оценки из SharedPreferences
         SharedPreferences prefs = getContext().getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
