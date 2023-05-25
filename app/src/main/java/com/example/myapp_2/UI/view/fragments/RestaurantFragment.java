@@ -51,7 +51,7 @@ import java.util.concurrent.Executors;
 
 public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBarChangeListener {
 
-    RestaurantPresenter restaurantPresenter = new RestaurantPresenter(this);
+    private RestaurantPresenter restaurantPresenter;
 
     private Button buttonRegister;
     private Button buttonRegistre_table;
@@ -62,7 +62,6 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
     private BroadcastReceiver broadcastReceiver;
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
-
 
     private RatingBar ratingBar;
     private TextView ratingAverageTextView;
@@ -91,9 +90,9 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
 
     private long noteId;
 
-//    public RestaurantFragment(long noteId) {
-//        this.noteId = noteId;
-//    }
+    public RestaurantFragment(int id) {
+        restaurantPresenter = new RestaurantPresenter(this, id);
+    }
 
     public void createFile(String fileName, String fileContent) {//Реализовать создание текстового файла в app-specific storage.
         try {
@@ -157,7 +156,7 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
 
         viewPager = v.findViewById(R.id.view_pager);
 
-        viewPager.setAdapter(restaurantsPresenter.getSliderAdapter());
+        viewPager.setAdapter(restaurantPresenter.getSliderAdapter());
 
 // Получаем оценки из SharedPreferences
         SharedPreferences prefs = getContext().getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
@@ -282,7 +281,7 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
             public void onClick(View view) {
                 FragmentManager fragmentManager = requireFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_fragment_container, new RestaurantsFragment());
+                fragmentTransaction.replace(R.id.main_activity_fragment_container, new RestaurantsFragment(requireActivity()));
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -427,8 +426,6 @@ public class RestaurantFragment extends Fragment implements RatingBar.OnRatingBa
         Cart cart = Cart.getInstance();
         cart.addItem(product);
     }
-
-
     // Метод, который создает список товаров
 
 }

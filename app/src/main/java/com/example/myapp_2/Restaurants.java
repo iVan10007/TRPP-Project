@@ -8,6 +8,7 @@ public class Restaurants extends DataSource{
     public Restaurants() {
 
         super("Restaurants");
+        restaurants = new ArrayList<>();
     }
 
     public ArrayList<Restaurant> getRestaurants(){

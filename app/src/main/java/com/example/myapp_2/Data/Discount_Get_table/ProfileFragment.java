@@ -76,16 +76,16 @@ public class ProfileFragment extends Fragment {
         anim.setDuration(200);
         view.startAnimation(anim);
         ImageButton btnFirstFragment = view.findViewById(R.id.btn_first_fragment);
-        btnFirstFragment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentManager().popBackStack();
-                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.main_activity_container, new RestaurantFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
+//        btnFirstFragment.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getFragmentManager().popBackStack();
+//                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.main_activity_container, new RestaurantFragment());
+//                transaction.addToBackStack(null);
+//                transaction.commit();
+//            }
+//        });
         ImageButton imageButtonProfile = view.findViewById(R.id.imageButtonProfile);
         imageButtonProfile.setOnClickListener(new View.OnClickListener() {
             @Override

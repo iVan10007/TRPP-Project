@@ -28,7 +28,6 @@ public class Repository {
 
         int[] sliderImages = {R.drawable.first_1, R.drawable.first_2, R.drawable.first_3, R.drawable.first_4, R.drawable.first_5};
 
-
         Restaurant restaurant1 = new Restaurant(1,"Русский дом", "Русская кухня", "Москва, Рочдельская ул., 11/5", "9:00 - 23:00", R.drawable.first_1, productList1, sliderImages, new Cart());
         restaurants.add(restaurant1);
         Restaurant restaurant2 = new Restaurant(2,"Русский дом", "Русская кухня", "Москва, Рочдельская ул., 11/5", "9:00 - 23:00", R.drawable.first_2, productList1, sliderImages, new Cart());
@@ -45,5 +44,6 @@ public class Repository {
             if(r.getId() == id)
                 return r;
         }
+        return null;
     }
 }

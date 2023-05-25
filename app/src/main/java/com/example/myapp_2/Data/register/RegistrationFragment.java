@@ -93,7 +93,7 @@ public class RegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.main_activity_fragment_container, new RestaurantsFragment());
+                transaction.replace(R.id.main_activity_fragment_container, new RestaurantsFragment(requireActivity()));
               //  transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
                 transaction.addToBackStack(null);
                 transaction.commit();

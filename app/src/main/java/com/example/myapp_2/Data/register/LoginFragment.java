@@ -68,10 +68,10 @@ public class LoginFragment extends Fragment {
                     editor.putInt("profile_num", profile_num);
                     editor.apply();
 
-                    FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.main_activity_container, new RestaurantFragment());
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+//                    FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+//                    transaction.replace(R.id.main_activity_container, new RestaurantFragment());
+//                    transaction.addToBackStack(null);
+//                    transaction.commit();
                 } else {
                     Toast.makeText(getActivity(), "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }
@@ -83,7 +83,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.main_activity_fragment_container, new RestaurantsFragment());
+                transaction.replace(R.id.main_activity_fragment_container, new RestaurantsFragment(requireActivity()));
                 //  transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
                 transaction.addToBackStack(null);
                 transaction.commit();

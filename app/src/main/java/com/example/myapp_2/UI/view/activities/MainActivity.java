@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity{
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
                     if (item.getItemId() == R.id.restaurants) {
-                        replaceFragment(new RestaurantsFragment());
+                        replaceFragment(new RestaurantsFragment(this));
                     }
                     if (item.getItemId() == R.id.discounts) {
                         replaceFragment(new StocksFragment());
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity{
                     return true;
                 });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new RestaurantsFragment()).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new RestaurantsFragment(this)).addToBackStack(null).commit();
 
         if (isRegister) {
             binding.bottomNavigationView.setVisibility(View.GONE);

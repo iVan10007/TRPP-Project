@@ -1,8 +1,11 @@
 package com.example.myapp_2.Data.Discount_Get_table;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,11 +26,14 @@ import com.example.myapp_2.databinding.FragmentRestaurantsBinding;
 
 import java.util.ArrayList;
 
-public class RestaurantsFragment extends Fragment implements RecyclerViewInterface {
-    ArrayList<RestaurantModel> restaurantModels = new ArrayList<>();
-    int[] restaurantsImages = {R.drawable.first_1, R.drawable.first_2, R.drawable.first_3, R.drawable.first_4};
+public class RestaurantsFragment extends Fragment implements RecyclerViewInterface{
+    RestaurantsPresenter restaurantsPresenter;
 
-    RestaurantsPresenter restaurantsPresenter = new RestaurantsPresenter(this);
+    public RestaurantsFragment(FragmentActivity a){
+//        FragmentActivity a = getActivity();
+//        FragmentManager m = a.getSupportFragmentManager();
+        restaurantsPresenter = new RestaurantsPresenter(this, a.getSupportFragmentManager());
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
@@ -36,7 +42,6 @@ public class RestaurantsFragment extends Fragment implements RecyclerViewInterfa
         Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fragment_transition_animation);
         anim.setDuration(170);
         view.startAnimation(anim);
-        setUpRestaurants();
 
         binding.recyclerView.setAdapter(restaurantsPresenter.getRestaurantsRecyclerViewAdapterAdapter());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -66,19 +71,7 @@ public class RestaurantsFragment extends Fragment implements RecyclerViewInterfa
         return binding.getRoot();
     }
 
-    private void setUpRestaurants(){
-        String[] restaurauntsNames = getResources().getStringArray(R.array.restaurants_names);
-        String[] restaurauntsAdresses = getResources().getStringArray(R.array.restaurants_adresses);
-        String[] restaurauntsWorkTime = getResources().getStringArray(R.array.restaurants_work_time);
-        String[] restaurantsKitchenTypes = getResources().getStringArray(R.array.kitchenTypes);
-
-        for(int i=0;i<restaurauntsNames.length;i++){
-            restaurantModels.add(new RestaurantModel(restaurauntsNames[i], restaurauntsAdresses[i], restaurauntsWorkTime[i], restaurantsKitchenTypes[i], restaurantsImages[i]));
-        }
-    }
-    @Override
-    public void onItemClick(int position) { // надо чуток переделать
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_activity_fragment_container, new RestaurantFragment()).addToBackStack(null).commit();
+    public void onItemClick(int position) {
+        restaurantsPresenter.onItemClicked(position);
     }
 }

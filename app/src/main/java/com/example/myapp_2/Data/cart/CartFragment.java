@@ -70,13 +70,13 @@ public class CartFragment extends Fragment {
             }
         });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.main_activity_fragment_container, new RestaurantFragment()).addToBackStack(null).commit();
-            }
-        });
+//        backButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//                transaction.replace(R.id.main_activity_fragment_container, new RestaurantFragment()).addToBackStack(null).commit();
+//            }
+//        });
 
         return view;
     }
